@@ -13,7 +13,12 @@ def login():
     error = None
     if request.method == 'POST':
     	url =  app.config['api_url'] + 'login'
-        request_headers = {'Content-Type': 'application/json'}
+        request_headers = {
+            'Content-Type': 'application/json'
+            'xhrFields': {
+                'withCredentials': True,
+            }
+        }
         request_data = {
 			'username' : request.form['username'],
     		'password' : request.form['password'],
@@ -38,7 +43,12 @@ def edit_event(event_id):
 @app.route('/events/<int:event_id>', methods=['GET'])
 def show_event(event_id):
     url =  app.config['api_url'] + 'events/' + event_id
-    request_headers = {'Content-Type': 'application/json'}
+    request_headers = {
+        'Content-Type': 'application/json'
+        'xhrFields': {
+            'withCredentials': True,
+        }
+    }
     request_data = {
 		'auth_token' : session['auth_token'],
 	}
