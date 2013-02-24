@@ -56,10 +56,12 @@ def show_event(event_id):
 	}
 
     response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
-    if response.text['status'] == 'REQUEST_DENIED':
-	    error = response.text['error']
+    r = response.json()
+
+    if r['status']!= 'OK':
+	    error = r['error_detail']
     else:
-        event = response
+        event = r['event']
     return render_template('events.html', event=event)
     
 @app.route('/events/')
