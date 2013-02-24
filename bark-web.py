@@ -14,8 +14,8 @@ def login():
     if request.method == 'POST':
     	url =  app.config['api_url'] + 'login'
         request_headers = {
-            'Content-Type': 'application/json'
-            'xhrFields': {
+            'Content-Type': 'application/json',
+            'xhrFields' : {
                 'withCredentials': True,
             }
         }
@@ -44,7 +44,7 @@ def edit_event(event_id):
 def show_event(event_id):
     url =  app.config['api_url'] + 'events/' + event_id
     request_headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
         'xhrFields': {
             'withCredentials': True,
         }
