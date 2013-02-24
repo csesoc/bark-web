@@ -1,33 +1,70 @@
-{% extends "bark_template.html" %}
+{% extends "layout.html" %}
 {% block title %} Add Event {% endblock %}
 {% block head %}
     {{ super() }}
 
 {% endblock %}
 {% block content %}
+<article class="row">
+      <section class="one whole padded">
     <h1>Add Event</h1>
     <form id='add' action='/events/add' method='post' accept-charset='UTF-8'>
-	<fieldset >
+	<fieldset>
+		<legend>Fill in details to create event</legend>
 	{% if error %} 
 	<p>{{ error }}</p>
 	{% endif %}
-	<label for='name' >Name*:</label>
-	<input type='text' name='name' id='name'  maxlength="50" />
-	 
-	<label for='description' >Description*:</label>
-	<textarea name='description' id='description' ></textarea>
 
-	<label for='start_time' >Start_time*:</label>
-	<input type='text' name='start_time' id='start_time'  maxlength="50" />
+	<div class="row">
+    	<div class="one whole padded">
+			<label for='name' >Name*:</label>
+			<input type='text' name='name' id='name' />
+		</div>
+	</div>
 
-	<label for='end_time' >End_time*:</label>
-	<input type='text' name='end_time' id='end_time'  maxlength="50" />
+	<div class="row">
+    	<div class="one whole padded">
+			<label for='description' >Description*:</label>
+			<textarea name='description' id='description' ></textarea>
+		</div>
+	</div>
+
+	<div class="row">
+    	<div class="one half padded">
+			<label for='start_time' >Start_time*:</label>
+			<input type='text' name='start_time' id='start_time' />
+		</div>
+
+		<div class="one half padded">
+			<label for='end_time' >End_time*:</label>
+			<input type='text' name='end_time' id='end_time'/>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="one fourth padded">
+			<label for='group_id' >Group*:</label>
+	        <span class="select">
+	          <select class="unselected" name='group_id' id='group_id'>
+	            <option value="" disabled="" selected="">Group</option>
+	            <option value="1">1</option>
+	            <option value="2">2</option>
+	          </select>
+	        </span>
+	      </div>
+	</div>
 	 
-	<label for='group_id' >Group_id*:</label>
-	<input type='text' name='group_id' id='group_id'  maxlength="50" />
-	 
-	<input type='submit' name='Submit' value='Submit' />
+	<div class="row">
+      <div class="one whole padded">
+ 		<button type="submit" class="round">Submit</button>
+ 		<a href="/events" class="button round warning">Cancel</a>
+      </div>
+    </div>
 	 
 	</fieldset>
 	</form>
+
+	<hr>
+	</section>
+</article>
 {% endblock %}

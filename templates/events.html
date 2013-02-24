@@ -1,14 +1,23 @@
-{% extends "bark_template.html" %}
+{% extends "layout.html" %}
 {% block title %} My Events {% endblock %}
 {% block head %}
     {{ super() }}
 
 {% endblock %}
 {% block content %}
-    <h1>My Events</h1>
-    <ul>
-    {% for event in events %}
-    	<li><a href="/events/{{ event.id }}">{{ event.name }}</a> - <a href="/events/{{ event.id }}/delete">Delete</a></li>
-  	{% endfor %}
-	</ul>
+
+<article class="row">
+      <section class="one whole padded">
+        <h1>My Events</h1>
+        <p>Below is a list of events you own:</p>
+		<ul>
+			{% for event in events %}
+			<li><a href="/events/{{ event.id }}">{{ event.name }}</a> - <a href="/events/{{ event.id }}/delete">Delete</a></li>
+			{% endfor %}
+		</ul>
+        <hr>
+			<a href="/events/add" class="button round">Create New Event</a>
+		<hr>
+      </section>
+    </article>   
 {% endblock %}
