@@ -10,13 +10,15 @@
       <section class="one whole padded">
         <h1>My Events</h1>
         <p>Below is a list of events you own:</p>
-		<ul>
+		<ul class="list">
 			{% for event in events %}
 			<li><a href="/events/{{ event.id }}">{{ event.name }}</a> - <a href="/events/{{ event.id }}/delete">Delete</a></li>
 			{% endfor %}
 		</ul>
         <hr>
-			<a href="/events/add" class="button round">Create New Event</a>
+			<p>
+				<a href="/events/add" class="button round">Create New Event</a>
+			</p>
 		<hr>
       </section>
     </article>   

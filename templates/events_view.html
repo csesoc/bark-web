@@ -1,14 +1,28 @@
-{% extends "bark_template.html" %}
+{% extends "layout.html" %}
 {% block title %} Event - {{ event.name }} {% endblock %}
 {% block head %}
     {{ super() }}
 
 {% endblock %}
 {% block content %}
-    <h1>Event</h1>
-    Name: {{ event.name }}<br>
-    Group: {{ event.group}}<br>
-    Description: {{ event.description }}<br>
-    Start Time: {{ event.start_time }}<br>
-    End Time: {{ event.end_time }}<br>
+<article class="row">
+	<section class="one whole padded">
+        <img src="http://placehold.it/300x200/198d98/ffffff/" class="pull-left gap-right gap-bottom" alt="">
+        <h1>Event: {{event.name}}</h1>
+        <h4>Name:</h4>
+        <p>{{ event.name }}</p>
+	    <h4>Group:</h4>
+        <p>{{ event.group}}</p>
+    </section>
+   	<section class="one whole padded">
+	    <h4>Description:</h4>
+        <p>{{ event.description }}</p>
+	    <h4>Start Time:</h4>
+	    <p>{{ event.start_time }}</p>
+        <h4>End Time:</h4>
+        <p>{{ event.end_time }}</p>
+
+	    <hr>
+    </section>
+</article>
 {% endblock %}
