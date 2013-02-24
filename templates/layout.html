@@ -47,6 +47,7 @@
         <div class="one third padded">
           <h1 class="responsive zero" data-compression="5.65" data-min="20" data-max="200"><a href="#">Bark-Web</a></h1>
         </div>
+        {% if session['auth_token'] %}
         <div class="two thirds padded">
           <nav class="inline pull-right gap-top">
             <ul>
@@ -58,6 +59,7 @@
             </ul>
           </nav>
         </div>
+        {% endif %}
       </div>
     </div>
   </header>

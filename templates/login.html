@@ -1,25 +1,47 @@
-{% extends "bark_template.html" %}
+{% extends "layout.html" %}
 {% block title %} Login {% endblock %}
 {% block head %}
     {{ super() }}
 
 {% endblock %}
 {% block content %}
+
+<article class="row">
+      <section class="one whole padded">
     <h1>Login</h1>
     <form id='login' action='/login' method='post' accept-charset='UTF-8'>
-	<fieldset >
-	<legend>Login</legend>	
+	<fieldset>
+		<legend>Please Login</legend>
 	{% if error %} 
 	<p>{{ error }}</p>
 	{% endif %}
-	<label for='username' >Username*:</label>
-	<input type='text' name='username' id='username'  maxlength="50" />
-	 
-	<label for='password' >Password*:</label>
-	<input type='password' name='password' id='password' maxlength="50" />
-	 
-	<input type='submit' name='Submit' value='Submit' />
+
+	<div class="row">
+    	<div class="one whole padded">
+			<label for='username' >Username*:</label>
+			<input type='text' name='username' id='username' />
+		</div>
+	</div>
+
+	<div class="row">
+    	<div class="one whole padded">
+			<label for='password' >Password*:</label>
+			<input type='password' name='password' id='password' />
+		</div>
+	</div>
+
+
+	<div class="row">
+      <div class="one whole padded">
+ 		<button type="submit" class="round">Submit</button>
+ 		<button type="reset" class="round warning">Reset</button>
+      </div>
+    </div>
 	 
 	</fieldset>
 	</form>
+
+	<hr>
+	</section>
+</article>
 {% endblock %}
