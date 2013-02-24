@@ -44,30 +44,32 @@ def edit_event(event_id):
 
 @app.route('/events/<int:event_id>', methods=['GET'])
 def show_event(event_id):
-    url =  app.config['api_url'] + 'events/' + event_id
+    url =  app.config['api_url'] + 'events/'+ str(event_id)
     request_headers = {
-        'Content-Type': 'application/json',
-        'xhrFields': {
-            'withCredentials': True,
-        }
+        'auth_token' : session['auth_token'],
     }
-    request_data = {
-		'auth_token' : session['auth_token'],
-	}
 
-    response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+    response = requests.get(url,headers=request_headers)
     r = response.json()
-
+    return response.text
     if r['status']!= 'OK':
 	    error = r['error_detail']
     else:
         event = r['event']
-    return render_template('events.html', event=event)
+    return render_template('event_view.html', event=event)
     
 @app.route('/events/')
 def events():
+    url =  app.config['api_url'] + 'events'
+    request_headers = {
+        'auth_token' : session['auth_token'],
+    }
 
-    return 'events page'
+    response = requests.get(url,headers=request_headers)
+    r = response.json()
+
+    events = r['events']
+    return render_template('events.html', events=events)
 
 
 if __name__ == '__main__':
