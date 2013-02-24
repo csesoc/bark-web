@@ -87,9 +87,9 @@ def add_event():
         request_data = {
             'description' : request.form['description'],
             'name'        : request.form['name'],
-            'start_time'  : request.form['start_time'],
-            'end_time'    : request.form['end_time'],
-            'group_id'    : request.form['group_id'],
+            'start_time'  : int(request.form['start_time']),
+            'end_time'    : int(request.form['end_time']),
+            'group_id'    : int(request.form['group_id']),
 
         }
 
