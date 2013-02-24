@@ -1,5 +1,5 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
-import requests, json
+import requests, json,pprint
 
 app = Flask(__name__)
 
@@ -25,11 +25,13 @@ def login():
 		}
 
         response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+        r = response.json()
 
-        if response.text['status'] == 'REQUEST_DENIED':
-	        error = response.text['error_details']
+
+        if r['status'] != 'OK':
+	        error = r['error_detail']
         else:
-            session['auth_token'] = response.text['auth_token']
+            session['auth_token'] = r['auth_token']
             flash('You were logged in')
             return redirect(url_for('events'))
     return render_template('login.html', error=error)
@@ -69,5 +71,5 @@ def events():
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
-    app.api_url = 'http://localhost:5000/'
+    app.config['api_url'] = 'http://localhost:5000/'
     app.run(port=4444)
