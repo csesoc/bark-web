@@ -37,6 +37,25 @@ def login():
             return redirect(url_for('events'))
     return render_template('login.html', error=error)
 
+@app.route('/logout', methods=['GET'])
+def logout():
+    url =  app.config['api_url'] + 'logout'
+    request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        }
+    }
+    request_data = {
+        'auth_token' : session['auth_token'],
+    }
+
+    response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+    session.pop('auth_token', None)   
+
+    flash('You were logged out')
+    return redirect(url_for('login'))
+
 
 #Events
 @app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
@@ -47,6 +66,10 @@ def edit_event(event_id):
 def delete_event(event_id):
     url =  app.config['api_url'] + 'events/'+ str(event_id)
     request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
         'auth_token' : session['auth_token'],
     }
 
@@ -62,6 +85,10 @@ def delete_event(event_id):
 def show_event(event_id):
     url =  app.config['api_url'] + 'events/'+ str(event_id)
     request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
         'auth_token' : session['auth_token'],
     }
 
@@ -79,6 +106,10 @@ def show_event(event_id):
 def events():
     url =  app.config['api_url'] + 'events'
     request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
         'auth_token' : session['auth_token'],
     }
 
