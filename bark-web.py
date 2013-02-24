@@ -43,6 +43,21 @@ def login():
 def edit_event(event_id):
 	return 'edit'
 
+@app.route('/events/<int:event_id>/delete', methods=['GET'])
+def delete_event(event_id):
+    url =  app.config['api_url'] + 'events/'+ str(event_id)
+    request_headers = {
+        'auth_token' : session['auth_token'],
+    }
+
+    response = requests.delete(url,headers=request_headers)
+    r = response.json()
+    if r['status']!= 'OK':
+        flash('Not deleted')
+    else:
+        flash('Deleted')
+    return redirect(url_for('events'))
+
 @app.route('/events/<int:event_id>', methods=['GET'])
 def show_event(event_id):
     url =  app.config['api_url'] + 'events/'+ str(event_id)
