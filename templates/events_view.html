@@ -1,0 +1,14 @@
+{% extends "bark_template.html" %}
+{% block title %} Event - {{ event.name }} {% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block content %}
+    <h1>Event</h1>
+    Name: {{ event.name }}<br>
+    Group: {{ event.group}}<br>
+    Description: {{ event.description }}<br>
+    Start Time: {{ event.start_time }}<br>
+    End Time: {{ event.end_time }}<br>
+{% endblock %}

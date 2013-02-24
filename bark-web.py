@@ -52,12 +52,13 @@ def show_event(event_id):
 
     response = requests.get(url,headers=request_headers)
     r = response.json()
-    return response.text
+
     if r['status']!= 'OK':
-	    error = r['error_detail']
+        error = r['error_detail']
+        return render_template('events_not_found.html', error=error)
     else:
         event = r['event']
-    return render_template('event_view.html', event=event)
+    return render_template('events_view.html', event=event)
     
 @app.route('/events/')
 def events():
