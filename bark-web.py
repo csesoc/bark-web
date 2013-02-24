@@ -8,6 +8,7 @@ app = Flask(__name__)
 def index():
     return 'Index Page'
 
+#Auth
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -37,7 +38,7 @@ def login():
     return render_template('login.html', error=error)
 
 
-
+#Events
 @app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
 def edit_event(event_id):
 	return 'edit'
@@ -70,6 +71,39 @@ def events():
 
     events = r['events']
     return render_template('events.html', events=events)
+
+@app.route('/events/add', methods=['GET', 'POST'])
+def add_event():
+    error = None
+    if request.method == 'POST':
+        url =  app.config['api_url'] + 'events'
+        request_headers = {
+            'Content-Type': 'application/json',
+            'xhrFields' : {
+                'withCredentials': True,
+            },
+            'auth_token' : session['auth_token'], 
+        }
+        request_data = {
+            'description' : request.form['description'],
+            'name'        : request.form['name'],
+            'start_time'  : request.form['start_time'],
+            'end_time'    : request.form['end_time'],
+            'group_id'    : request.form['group_id'],
+
+        }
+
+        response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+        r = response.json()
+
+
+        if r['status'] != 'OK':
+            error = r['error_detail']
+        else:
+            return redirect(url_for('events/' + r['event_id']))
+    return render_template('events_add.html', error=error)
+
+#Groups
 
 
 if __name__ == '__main__':

@@ -1,0 +1,33 @@
+{% extends "bark_template.html" %}
+{% block title %} Add Event {% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block content %}
+    <h1>Add Event</h1>
+    <form id='add' action='/events/add' method='post' accept-charset='UTF-8'>
+	<fieldset >
+	{% if error %} 
+	<p>{{ error }}</p>
+	{% endif %}
+	<label for='name' >Name*:</label>
+	<input type='text' name='name' id='name'  maxlength="50" />
+	 
+	<label for='description' >Description*:</label>
+	<textarea name='description' id='description' ></textarea>
+
+	<label for='start_time' >Start_time*:</label>
+	<input type='text' name='start_time' id='start_time'  maxlength="50" />
+
+	<label for='end_time' >End_time*:</label>
+	<input type='text' name='end_time' id='end_time'  maxlength="50" />
+	 
+	<label for='group_id' >Group_id*:</label>
+	<input type='text' name='group_id' id='group_id'  maxlength="50" />
+	 
+	<input type='submit' name='Submit' value='Submit' />
+	 
+	</fieldset>
+	</form>
+{% endblock %}
