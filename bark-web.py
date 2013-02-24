@@ -88,8 +88,8 @@ def add_event():
         request_data = {
             'description' : request.form['description'],
             'name'        : request.form['name'],
-            'start_time'  : int(request.form['start_time']),
-            'end_time'    : int(request.form['end_time']),
+            'start_time'  : request.form['start_time'],
+            'end_time'    : request.form['end_time'],
             'group_id'    : int(request.form['group_id']),
 
         }
@@ -101,7 +101,7 @@ def add_event():
         if r['status'] != 'OK':
             error = r['error_detail']
         else:
-            return redirect(url_for('events/' + r['event_id']))
+            return redirect('/events/' + str(r['event_id']))
     return render_template('events_add.html', error=error)
 
 #Groups
