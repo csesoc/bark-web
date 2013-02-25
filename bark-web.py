@@ -6,7 +6,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Index Page'
+    if session.get('auth_token'):
+        return redirect(url_for('events'))
+    return redirect(url_for('login'))
+
 
 #Auth
 @app.route('/login', methods=['GET', 'POST'])
@@ -34,7 +37,7 @@ def login():
         else:
             session['auth_token'] = r['auth_token']
             flash('You were logged in')
-            return redirect(url_for('events'))
+            return redirect(url_for('index'))
     return render_template('login.html', error=error)
 
 @app.route('/logout', methods=['GET'])
