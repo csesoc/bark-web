@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %} My Events {% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block content %}
+
+<article class="row">
+      <section class="one whole padded">
+        <h1>My Groups</h1>
+        <p>Below is a list of groups you own:</p>
+		<ul class="list">
+			{% for group in groups %}
+			<li><a href="/groups/{{ group.id }}">{{ group.name }}</a> - <a href="/groups/{{ group.id }}/delete">Delete</a></li>
+			{% endfor %}
+		</ul>
+        <hr>
+			<p>
+				<a href="/groups/add" class="button round">Create New Group</a>
+			</p>
+		<hr>
+      </section>
+    </article>   
+{% endblock %}

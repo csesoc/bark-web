@@ -12,7 +12,7 @@
         <h4>Name:</h4>
         <p>{{ event.name }}</p>
 	    <h4>Group:</h4>
-        <p>{{ event.group}}</p>
+        <p><a href="/groups/{{ event.group_id }}">{{ event.group }}</a></p>
     </section>
    	<section class="one whole padded">
 	    <h4>Description:</h4>
@@ -23,6 +23,16 @@
         <p>{{ event.end_time }}</p>
 
 	    <hr>
+    </section>
+    <section class="one whole padded">
+        <h4>Swipes:</h4>
+        <ul class="list">
+            {% for s in swipes %}
+            <li>{{s.card_uid}} from {{s.device_id}} @ {{s.timestamp}}</li>
+            {% endfor %}
+        </ul>
+
+        <hr>
     </section>
 </article>
 {% endblock %}

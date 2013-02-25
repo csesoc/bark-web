@@ -83,7 +83,7 @@ def delete_event(event_id):
 
 @app.route('/events/<int:event_id>', methods=['GET'])
 def show_event(event_id):
-    url =  app.config['api_url'] + 'events/'+ str(event_id)
+    url =  app.config['api_url'] + 'events/'+ str(event_id)+'/swipes'
     request_headers = {
         'Content-Type': 'application/json',
         'xhrFields' : {
@@ -98,6 +98,7 @@ def show_event(event_id):
     if r['status']!= 'OK':
         error = r['error_detail']
         return render_template('events_not_found.html', error=error)
+
     else:
         event = r['event']
     return render_template('events_view.html', event=event)
@@ -151,8 +152,64 @@ def add_event():
     return render_template('events_add.html', error=error)
 
 #Groups
+@app.route('/groups/')
+def groups():
+    url =  app.config['api_url'] + 'groups'
+    request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
+        'auth_token' : session['auth_token'],
+    }
 
+    response = requests.get(url,headers=request_headers)
+    r = response.json()
 
+    groups = r['groups']
+    return render_template('groups.html', groups=groups)
+
+@app.route('/groups/<int:group_id>', methods=['GET'])
+def show_group(group_id):
+    url =  app.config['api_url'] + 'groups/'+ str(group_id)
+    request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
+        'auth_token' : session['auth_token'],
+    }
+
+    response = requests.get(url,headers=request_headers)
+    r = response.json()
+
+    if r['status']!= 'OK':
+        error = r['error_detail']
+        return render_template('groups_not_found.html', error=error)
+    else:
+        group = r['group']
+    return render_template('groups_view.html', group=group)
+
+@app.route('/groups/<int:group_id>/delete', methods=['GET'])
+def delete_event(group_id):
+    url =  app.config['api_url'] + 'groups/'+ str(event_id)
+    request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
+        'auth_token' : session['auth_token'],
+    }
+
+    response = requests.delete(url,headers=request_headers)
+    r = response.json()
+    if r['status']!= 'OK':
+        flash('Not deleted')
+    else:
+        flash('Deleted')
+    return redirect(url_for('groups'))  
+
+#App
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'

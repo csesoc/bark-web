@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %} Group - {{ group.name }} {% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block content %}
+<article class="row">
+	<section class="one whole padded">
+        <img src="http://placehold.it/300x200/198d98/ffffff/" class="pull-left gap-right gap-bottom" alt="">
+        <h1>Group: {{group.name}}</h1>
+        <h4>Name:</h4>
+        <p>{{ group.name }}</p>
+    </section>
+   	<section class="one whole padded">
+	    <h4>Description:</h4>
+        <p>{{ group.description }}</p>
+	    <hr>
+    </section>
+    <section class="one whole padded">
+        <h4>Owners :</h4>
+        <ul class="list">
+            {% for owner in group.owners %}
+            <li><a href="/users/{{ owner.id }}">{{ owner.username }}</a></li>
+            {% endfor %}
+        </ul>
+        <hr>
+    </section>
+    <section class="one whole padded">
+        <h4>Members :</h4>
+        <ul class="list">
+            {% for member in group.members %}
+            <li>{{member.student_number}}</li>
+            {% endfor %}
+        </ul>
+        <hr>
+    </section>
+    <section class="one whole padded">
+        <h4>Events :</h4>
+        <ul class="list">
+            {% for event in group.events %}
+            <li><a href="/events/{{ event.id }}">{{ event.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <hr>
+    </section>
+</article>
+{% endblock %}
