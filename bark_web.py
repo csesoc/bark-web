@@ -222,8 +222,9 @@ def add_groups():
     return render_template('groups_add.html', error=error)
 
 #App
+app.config['api_url'] = 'http://api.bark.csesoc.unsw.edu.au/'
+app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
+
 if __name__ == '__main__':
     app.debug = True
-    app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
-    app.config['api_url'] = 'http://api.bark.csesoc.unsw.edu.au/'
     app.run(port=4444)
