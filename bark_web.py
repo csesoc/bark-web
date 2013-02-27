@@ -193,28 +193,37 @@ def show_group(group_id):
         group = r['group']
     return render_template('groups_view.html', group=group)
 
-@app.route('/groups/<int:group_id>/delete', methods=['GET'])
-def delete_event(group_id):
-    url =  app.config['api_url'] + 'groups/'+ str(event_id)
-    request_headers = {
-        'Content-Type': 'application/json',
-        'xhrFields' : {
-            'withCredentials': True,
-        },
-        'auth_token' : session['auth_token'],
-    }
 
-    response = requests.delete(url,headers=request_headers)
-    r = response.json()
-    if r['status']!= 'OK':
-        flash('Not deleted')
-    else:
-        flash('Deleted')
-    return redirect(url_for('groups'))  
+@app.route('/groups/add', methods=['GET', 'POST'])
+def add_groups():
+    error = None
+    if request.method == 'POST':
+        url =  app.config['api_url'] + 'groups'
+        request_headers = {
+            'Content-Type': 'application/json',
+            'xhrFields' : {
+                'withCredentials': True,
+            },
+            'auth_token' : session['auth_token'], 
+        }
+        request_data = {
+            'description' : request.form['description'],
+            'name'        : request.form['name'],
+        }
+
+        response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+        r = response.json()
+
+
+        if r['status'] != 'OK':
+            error = r['error_detail']
+        else:
+            return redirect('/groups/' + str(r['group_id']))
+    return render_template('groups_add.html', error=error)
 
 #App
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
-    app.config['api_url'] = 'http://localhost:5000/'
+    app.config['api_url'] = 'http://api.bark.csesoc.unsw.edu.au/'
     app.run(port=4444)

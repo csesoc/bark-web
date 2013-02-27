@@ -12,7 +12,7 @@
         <p>Below is a list of groups you own:</p>
 		<ul class="list">
 			{% for group in groups %}
-			<li><a href="/groups/{{ group.id }}">{{ group.name }}</a> - <a href="/groups/{{ group.id }}/delete">Delete</a></li>
+			<li><a href="/groups/{{ group.id }}">{{ group.name }}</a></li>
 			{% endfor %}
 		</ul>
         <hr>
