@@ -28,7 +28,7 @@ def login():
     		'password' : request.form['password'],
 		}
 
-        response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+        response = requests.post(url,data=json.dumps(request_data),headers=request_headers, verify=False)
         r = response.json()
 
 
@@ -53,7 +53,7 @@ def logout():
         'auth_token' : session['auth_token'],
     }
 
-    response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+    response = requests.post(url,data=json.dumps(request_data),headers=request_headers, verify=False)
     session.pop('auth_token', None)   
 
     flash('You were logged out')
@@ -76,7 +76,7 @@ def delete_event(event_id):
         'auth_token' : session['auth_token'],
     }
 
-    response = requests.delete(url,headers=request_headers)
+    response = requests.delete(url,headers=request_headers, verify=False)
     r = response.json()
     if r['status']!= 'OK':
         flash('Not deleted')
@@ -95,7 +95,7 @@ def show_event(event_id):
         'auth_token' : session['auth_token'],
     }
 
-    response = requests.get(url,headers=request_headers)
+    response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
 
     if r['status']!= 'OK':
@@ -117,7 +117,7 @@ def events():
         'auth_token' : session['auth_token'],
     }
 
-    response = requests.get(url,headers=request_headers)
+    response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
 
     events = r['events']
@@ -144,7 +144,7 @@ def add_event():
 
         }
 
-        response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+        response = requests.post(url,data=json.dumps(request_data),headers=request_headers, verify=False)
         r = response.json()
 
 
@@ -166,7 +166,7 @@ def groups():
         'auth_token' : session['auth_token'],
     }
 
-    response = requests.get(url,headers=request_headers)
+    response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
 
     groups = r['groups']
@@ -183,7 +183,7 @@ def show_group(group_id):
         'auth_token' : session['auth_token'],
     }
 
-    response = requests.get(url,headers=request_headers)
+    response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
 
     if r['status']!= 'OK':
@@ -211,7 +211,7 @@ def add_groups():
             'name'        : request.form['name'],
         }
 
-        response = requests.post(url,data=json.dumps(request_data),headers=request_headers)
+        response = requests.post(url,data=json.dumps(request_data),headers=request_headers, verify=False)
         r = response.json()
 
 
@@ -222,7 +222,7 @@ def add_groups():
     return render_template('groups_add.html', error=error)
 
 #App
-app.config['api_url'] = 'http://api.bark.csesoc.unsw.edu.au/'
+app.config['api_url'] = 'https://api.bark.csesoc.unsw.edu.au/'
 app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
 
 if __name__ == '__main__':
