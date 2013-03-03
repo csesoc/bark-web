@@ -135,15 +135,18 @@ def events():
 @app.route('/events/add', methods=['GET', 'POST'])
 def add_event():
     error = None
+    groups= None
+    request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
+        'auth_token' : session['auth_token'], 
+    }
+    
     if request.method == 'POST':
         url =  app.config['api_url'] + 'events'
-        request_headers = {
-            'Content-Type': 'application/json',
-            'xhrFields' : {
-                'withCredentials': True,
-            },
-            'auth_token' : session['auth_token'], 
-        }
+
         request_data = {
             'description' : request.form['description'],
             'name'        : request.form['name'],
@@ -161,7 +164,12 @@ def add_event():
             error = r['error_detail']
         else:
             return redirect('/events/' + str(r['event_id']))
-    return render_template('events_add.html', error=error)
+    
+    url =  app.config['api_url'] + 'groups'
+    response = requests.get(url,headers=request_headers, verify=False)
+    r = response.json()
+    groups = r['groups']
+    return render_template('events_add.html', error=error, groups=groups)
 
 #Groups
 @app.route('/groups/')

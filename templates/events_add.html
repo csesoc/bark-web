@@ -47,8 +47,9 @@
 	        <span class="select">
 	          <select class="unselected" name='group_id' id='group_id'>
 	            <option value="" disabled="" selected="">Group</option>
-	            <option value="1">1</option>
-	            <option value="2">2</option>
+	            {% for g in groups %}
+	            <option value="{{g.id}}">{{g.name}}</option>
+            	{% endfor %}
 	          </select>
 	        </span>
 	      </div>
