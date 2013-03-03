@@ -1,7 +1,15 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 import requests, json,pprint
+from datetime import datetime
+import iso8601
 
 app = Flask(__name__)
+
+@app.context_processor
+def utility_processor():
+    def format_time(time,format="%A, %d %B %Y %I:%M%p"):
+        return iso8601.parse_date(time).strftime(format)
+    return dict(format_time=format_time)
 
 
 @app.route('/')
@@ -97,14 +105,15 @@ def show_event(event_id):
 
     response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
-
     if r['status']!= 'OK':
         error = r['error_detail']
         return render_template('events_not_found.html', error=error)
 
     else:
         event = r['event']
-    return render_template('events_view.html', event=event)
+        swipes = r['swipes']
+        count = len(swipes)
+    return render_template('events_view.html', event=event,swipes=swipes,count=count)
     
 @app.route('/events/')
 def events():

@@ -18,17 +18,18 @@
 	    <h4>Description:</h4>
         <p>{{ event.description }}</p>
 	    <h4>Start Time:</h4>
-	    <p>{{ event.start_time }}</p>
+	    <p>{{ format_time(event.start_time) }}</p>
         <h4>End Time:</h4>
-        <p>{{ event.end_time }}</p>
+        <p>{{ format_time(event.end_time) }}</p>
 
 	    <hr>
     </section>
     <section class="one whole padded">
         <h4>Swipes:</h4>
+        Total Attendance: {{count}}
         <ul class="list">
             {% for s in swipes %}
-            <li>{{s.card_uid}} from {{s.device_id}} @ {{s.timestamp}}</li>
+            <li>{{s.card.student_number}} @ {{format_time(s.timestamp)}}</li>
             {% endfor %}
         </ul>
 
