@@ -146,8 +146,8 @@ def add_event():
     
     if request.method == 'POST':
         url =  app.config['api_url'] + 'events'
-        st = datetime.strptime(request.form['start_time'],"%m/%d/%Y %I:%M %p")
-        et = datetime.strptime(request.form['end_time'],"%m/%d/%Y %I:%M %p")    
+        st = datetime.strptime(request.form['start_time'],"%d/%m/%Y %I:%M %p")
+        et = datetime.strptime(request.form['end_time'],"%d/%m/%Y %I:%M %p")    
 
         request_data = {
             'description' : request.form['description'],
