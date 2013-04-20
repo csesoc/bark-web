@@ -2,6 +2,37 @@
 {% block title %} Add Event {% endblock %}
 {% block head %}
     {{ super() }}
+<script src="/static/js/plugins/mobi/mobiscroll.core.js" type="text/javascript"></script>
+
+    <script src="/static/js/plugins/mobi/mobiscroll.datetime.js" type="text/javascript"></script>
+    <script src="/static/js/plugins/mobi/mobiscroll.select.js" type="text/javascript"></script>
+
+    <script src="/static/js/plugins/mobi/mobiscroll.android-ics.js" type="text/javascript"></script>
+
+
+    <link href="/static/css/mobiscroll.core.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/mobiscroll.android-ics.css" rel="stylesheet" type="text/css" />
+
+
+    <link href="/static/css/mobiscroll.animation.css" rel="stylesheet" type="text/css" />
+
+
+
+    <script type="text/javascript">
+	$(document).ready(function(){
+
+    $('.datetimepicker').mobiscroll().datetime({
+        theme: 'android-ics light',
+        display: 'bubble',
+        animate: 'fade',
+        mode: 'scroller',
+        dateOrder: 'ddMy'
+    }); 
+	});
+    </script>
+    <style>
+
+    </style>
 
 {% endblock %}
 {% block content %}
@@ -32,12 +63,12 @@
 	<div class="row">
     	<div class="one half padded">
 			<label for='start_time' >Start_time*:</label>
-			<input type='text' name='start_time' id='start_time' />
+			<input class="datetimepicker" type='text' name='start_time' id='start_time' />
 		</div>
 
 		<div class="one half padded">
 			<label for='end_time' >End_time*:</label>
-			<input type='text' name='end_time' id='end_time'/>
+			<input class="datetimepicker" type='text' name='end_time' id='end_time'/>
 		</div>
 	</div>
 
