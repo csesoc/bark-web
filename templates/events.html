@@ -12,7 +12,7 @@
         <p>Below is a list of events you own:</p>
 		<ul class="list">
 			{% for event in events %}
-			<li><a href="/events/{{ event.id }}">{{ event.name }}</a> - <a href="/events/{{ event.id }}/delete">Delete</a></li>
+			<li><a href="/events/{{ event.id }}">{{ event.name }}</a> - <a href="/events/{{ event.id }}/edit">Edit</a> - <a href="/events/{{ event.id }}/delete">Delete</a></li>
 			{% endfor %}
 		</ul>
         <hr>

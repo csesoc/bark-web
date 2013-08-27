@@ -8,7 +8,7 @@
 <article class="row">
 	<section class="one whole padded">
         <img src="http://placehold.it/300x200/198d98/ffffff/" class="pull-left gap-right gap-bottom" alt="">
-        <h1>Event: {{event.name}}</h1>
+        <h1>Event: {{ event.name }} - <a href="/events/{{ event.id }}/edit">Edit</a></h1>
         <h4>Name:</h4>
         <p>{{ event.name }}</p>
 	    <h4>Group:</h4>

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %} Add Event {% endblock %}
+{% block title %} Edit Event - {{ event.name }} {% endblock %}
 {% block head %}
     {{ super() }}
 <script src="/static/js/plugins/mobi/mobiscroll.core.js" type="text/javascript"></script>
@@ -44,10 +44,10 @@
 {% block content %}
 <article class="row">
       <section class="one whole padded">
-    <h1>Add Event</h1>
-    <form id='add' action='/events/add' method='post' accept-charset='UTF-8'>
+    <h1>Edit Event</h1>
+    <form id='edit' action='/events/{{ event.id }}/edit' method='post' accept-charset='UTF-8'>
 	<fieldset>
-		<legend>Fill in details to create event</legend>
+		<legend>Fill in details to for the event</legend>
 	{% if error %} 
 	<p>{{ error }}</p>
 	{% endif %}
@@ -55,43 +55,42 @@
 	<div class="row">
     	<div class="one whole padded">
 			<label for='name' >Name*:</label>
-			<input type='text' name='name' id='name' />
+			<input type='text' name='name' id='name' value="{{ event.name }}" />
 		</div>
 	</div>
 
 	<div class="row">
     	<div class="one whole padded">
 			<label for='description' >Description*:</label>
-			<textarea name='description' id='description' ></textarea>
+			<textarea name='description' id='description' >{{ event.description }}</textarea>
 		</div>
 	</div>
 
 	<div class="row">
     	<div class="one half padded">
 			<label for='start_time' >Start_time*:</label>
-			<input class="datetimepicker" type='text' name='start_time' id='start_time' />
+			<input class="datetimepicker" type='text' name='start_time' id='start_time' value='{{ st }}'/>
 		</div>
 
 		<div class="one half padded">
 			<label for='end_time' >End_time*:</label>
-			<input class="datetimepicker" type='text' name='end_time' id='end_time'/>
+			<input class="datetimepicker" type='text' name='end_time' id='end_time' value='{{ et }}' />
 		</div>
 	</div>
+	
+    <div class="row">
+        <div class="one fourth padded">
+            <label for='group_id' >Group*:</label>
+            <span class="select">
+              <select name='group_id' id='group_id' value="{{ event.group.group_id }}">
+                {% for g in groups %}
+                <option value="{{ g.id }}">{{ g.name }}</option>
+                {% endfor %}
+              </select>
+            </span>
+          </div>
+    </div>
 
-	<div class="row">
-		<div class="one fourth padded">
-			<label for='group_id' >Group*:</label>
-	        <span class="select">
-	          <select class="unselected" name='group_id' id='group_id'>
-	            <option value="" disabled="" selected="">Group</option>
-	            {% for g in groups %}
-	            <option value=" {{g.id}} ">{{ g.name }}</option>
-            	{% endfor %}
-	          </select>
-	        </span>
-	      </div>
-	</div>
-	 
 	<div class="row">
       <div class="one whole padded">
  		<button type="submit" class="round">Submit</button>

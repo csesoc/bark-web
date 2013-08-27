@@ -67,15 +67,13 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('login'))
 
-
+####################################################################################
 #Events
-@app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
-def edit_event(event_id):
-	return 'edit'
+####################################################################################
 
-@app.route('/events/<int:event_id>/delete', methods=['GET'])
-def delete_event(event_id):
-    url =  app.config['api_url'] + 'events/'+ str(event_id)
+@app.route('/events/')
+def events():
+    url =  app.config['api_url'] + 'events'
     request_headers = {
         'Content-Type': 'application/json',
         'xhrFields' : {
@@ -84,13 +82,11 @@ def delete_event(event_id):
         'auth_token' : session['auth_token'],
     }
 
-    response = requests.delete(url,headers=request_headers, verify=False)
+    response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
-    if r['status']!= 'OK':
-        flash('Not deleted')
-    else:
-        flash('Deleted')
-    return redirect(url_for('events'))
+
+    events = r['events']
+    return render_template('events.html', events=events)
 
 @app.route('/events/<int:event_id>', methods=['GET'])
 def show_event(event_id):
@@ -114,23 +110,6 @@ def show_event(event_id):
         swipes = r['swipes']
         count = len(swipes)
     return render_template('events_view.html', event=event,swipes=swipes,count=count)
-    
-@app.route('/events/')
-def events():
-    url =  app.config['api_url'] + 'events'
-    request_headers = {
-        'Content-Type': 'application/json',
-        'xhrFields' : {
-            'withCredentials': True,
-        },
-        'auth_token' : session['auth_token'],
-    }
-
-    response = requests.get(url,headers=request_headers, verify=False)
-    r = response.json()
-
-    events = r['events']
-    return render_template('events.html', events=events)
 
 @app.route('/events/add', methods=['GET', 'POST'])
 def add_event():
@@ -155,13 +134,10 @@ def add_event():
             'start_time'  : st.isoformat(),
             'end_time'    : et.isoformat(),
             'group_id'    : int(request.form['group_id']),
-
+            'event_id'    : 0,
         }
-
         response = requests.post(url,data=json.dumps(request_data),headers=request_headers, verify=False)
         r = response.json()
-
-
         if r['status'] != 'OK':
             error = r['error_detail']
         else:
@@ -173,7 +149,83 @@ def add_event():
     groups = r['groups']
     return render_template('events_add.html', error=error, groups=groups)
 
+@app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
+def edit_event(event_id):
+    error = None
+    groups= None
+    request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
+        'auth_token' : session['auth_token'], 
+    }
+    if request.method == 'POST':
+        url =  app.config['api_url'] + 'events'
+        st = datetime.strptime(request.form['start_time'],"%d/%m/%Y %I:%M %p")
+        et = datetime.strptime(request.form['end_time'],"%d/%m/%Y %I:%M %p")
+
+        request_data = {
+            'description' : request.form['description'],
+            'name'        : request.form['name'],
+            'start_time'  : st.isoformat(),
+            'end_time'    : et.isoformat(),
+            'group_id'    : int(request.form['group_id']),
+            'event_id'    : int(event_id),
+        }
+        response = requests.post(url,data=json.dumps(request_data),headers=request_headers, verify=False)
+        r = response.json()
+        if r['status'] != 'OK':
+            error = r['error_detail']
+        else:
+            print "OK"
+            return redirect('/events/' + str(event_id))
+    
+    url =  app.config['api_url'] + 'events/'+ str(event_id)
+    response = requests.get(url,headers=request_headers, verify=False)
+    r = response.json()
+    if r['status']!= 'OK':
+        error = r['error_detail']
+        return render_template('events_not_found.html', error=error)
+
+    else:
+        event = r['event']
+        st = event['start_time']
+        st = datetime.strptime(st, "%Y-%m-%dT%H:%M:%S").strftime("%d/%m/%Y %I:%M %p")
+        et = event['end_time']
+        et = datetime.strptime(et, "%Y-%m-%dT%H:%M:%S").strftime("%d/%m/%Y %I:%M %p")
+        url =  app.config['api_url'] + 'groups'
+        response = requests.get(url,headers=request_headers, verify=False)
+        r = response.json()
+        if r['status'] != 'OK':
+            error = r['error_detail']
+            return render_template('groups_not_found.html', error=error)
+        else:
+            groups = r['groups']
+    return render_template('events_edit.html', event=event, error=error, groups=groups, st=st, et=et)
+
+@app.route('/events/<int:event_id>/delete', methods=['GET'])
+def delete_event(event_id):
+    url =  app.config['api_url'] + 'events/'+ str(event_id)
+    request_headers = {
+        'Content-Type': 'application/json',
+        'xhrFields' : {
+            'withCredentials': True,
+        },
+        'auth_token' : session['auth_token'],
+    }
+
+    response = requests.delete(url,headers=request_headers, verify=False)
+    r = response.json()
+    if r['status']!= 'OK':
+        flash('Not deleted')
+    else:
+        flash('Deleted')
+    return redirect(url_for('events'))
+
+####################################################################################
 #Groups
+####################################################################################
 @app.route('/groups/')
 def groups():
     url =  app.config['api_url'] + 'groups'
@@ -239,9 +291,16 @@ def add_groups():
         else:
             return redirect('/groups/' + str(r['group_id']))
     return render_template('groups_add.html', error=error)
-
+####################################################################################
 #App
+####################################################################################
+
+# Use this when developing on a local environment
+#app.config['api_url'] = 'http://127.0.0.1:5000/'
+
+#Use this when deploying to the CSESoc server
 app.config['api_url'] = 'https://api.bark.csesoc.unsw.edu.au/'
+
 app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
 
 if __name__ == '__main__':
