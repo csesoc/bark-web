@@ -52,6 +52,8 @@ def login():
 
 @app.route('/logout', methods=['GET'])
 def logout():
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     url =  app.config['api_url'] + 'logout'
     request_headers = {
         'Content-Type': 'application/json',
@@ -75,6 +77,8 @@ def logout():
 
 @app.route('/events/')
 def events():
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     url =  app.config['api_url'] + 'events'
     request_headers = {
         'Content-Type': 'application/json',
@@ -85,12 +89,17 @@ def events():
     }
     response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
-    
+    if r['status'] != "OK":
+        print r
+        error = r['error_detail']
+        return redirect(url_for('login'))
     events = r['events']
     return render_template('events.html', events=events)
 
 @app.route('/events/<int:event_id>', methods=['GET'])
 def show_event(event_id):
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     url =  app.config['api_url'] + 'events/'+ str(event_id)+'/swipes'
     request_headers = {
         'Content-Type': 'application/json',
@@ -114,6 +123,8 @@ def show_event(event_id):
 
 @app.route('/events/add', methods=['GET', 'POST'])
 def add_event():
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     error = None
     groups= None
     request_headers = {
@@ -152,6 +163,8 @@ def add_event():
 
 @app.route('/events/<int:event_id>/edit', methods=['GET', 'POST'])
 def edit_event(event_id):
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     error = None
     groups= None
     request_headers = {
@@ -207,6 +220,8 @@ def edit_event(event_id):
 
 @app.route('/events/<int:event_id>/delete', methods=['GET'])
 def delete_event(event_id):
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     url =  app.config['api_url'] + 'events/'+ str(event_id)
     request_headers = {
         'Content-Type': 'application/json',
@@ -229,6 +244,8 @@ def delete_event(event_id):
 ####################################################################################
 @app.route('/groups/')
 def groups():
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     url =  app.config['api_url'] + 'groups'
     request_headers = {
         'Content-Type': 'application/json',
@@ -246,6 +263,8 @@ def groups():
 
 @app.route('/groups/<int:group_id>', methods=['GET'])
 def show_group(group_id):
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     url =  app.config['api_url'] + 'groups/'+ str(group_id)
     request_headers = {
         'Content-Type': 'application/json',
@@ -268,6 +287,8 @@ def show_group(group_id):
 
 @app.route('/groups/add', methods=['GET', 'POST'])
 def add_groups():
+    if not session.get('auth_token'):
+        return redirect(url_for('login'))
     error = None
     if request.method == 'POST':
         url =  app.config['api_url'] + 'groups'
@@ -297,10 +318,10 @@ def add_groups():
 ####################################################################################
 
 # Use this when developing on a local environment
-app.config['api_url'] = 'http://127.0.0.1:5000/'
+# app.config['api_url'] = 'http://127.0.0.1:5000/'    
 
 #Use this when deploying to the CSESoc server
-# app.config['api_url'] = 'https://api.bark.csesoc.unsw.edu.au/'
+app.config['api_url'] = 'https://api.bark.csesoc.unsw.edu.au/'
 
 app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
 
