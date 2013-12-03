@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 import requests, json,pprint
 from datetime import datetime
@@ -81,10 +83,9 @@ def events():
         },
         'auth_token' : session['auth_token'],
     }
-
     response = requests.get(url,headers=request_headers, verify=False)
     r = response.json()
-
+    
     events = r['events']
     return render_template('events.html', events=events)
 
@@ -296,13 +297,18 @@ def add_groups():
 ####################################################################################
 
 # Use this when developing on a local environment
-#app.config['api_url'] = 'http://127.0.0.1:5000/'
+app.config['api_url'] = 'http://127.0.0.1:5000/'
 
 #Use this when deploying to the CSESoc server
-app.config['api_url'] = 'https://api.bark.csesoc.unsw.edu.au/'
+# app.config['api_url'] = 'https://api.bark.csesoc.unsw.edu.au/'
 
 app.secret_key = 'aslkdjf;lsakdjf;alksdjf;lkj'
 
 if __name__ == '__main__':
     app.debug = True
+    if not app.debug:
+        import logging
+        file_handler = logging.FileHandler(filename="logs/production.log")
+        app.logger.setLevel(logging.WARNING)
+        app.logger.addHandler(file_handler)
     app.run(port=4444)
